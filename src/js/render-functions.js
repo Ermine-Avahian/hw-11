@@ -1,12 +1,11 @@
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
 let lightbox;
 
-export function renderImages(images) {
-  const gallery = document.querySelector('.gallery');
+export function renderImages(images, gallery) {
   gallery.innerHTML = ''; // Очищуємо попередні результати
 
   if (images.length === 0) {
