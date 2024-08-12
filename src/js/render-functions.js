@@ -1,5 +1,9 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
+let lightbox;
 
 export function renderImages(images) {
   const gallery = document.querySelector('.gallery');
@@ -18,7 +22,7 @@ export function renderImages(images) {
     .map(image => {
       return `
       <li class="gallery-item">
-        <a href="${image.largeImageURL}" target="_blank" rel="noopener noreferrer">
+        <a href="${image.largeImageURL}" data-lightbox="gallery">
           <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
         </a>
         <div class="info">
@@ -33,4 +37,14 @@ export function renderImages(images) {
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);
+
+  // Ініціалізуємо або оновлюємо SimpleLightbox
+  if (lightbox) {
+    lightbox.refresh();
+  } else {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+  }
 }
