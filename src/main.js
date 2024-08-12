@@ -2,6 +2,7 @@ import { fetchImages } from './js/pixabay-api.js';
 import { renderImages } from './js/render-functions.js';
 
 const form = document.querySelector('#search-form');
+const loadingSpinner = document.querySelector('.loading-spinner');
 
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -15,6 +16,9 @@ form.addEventListener('submit', event => {
     return;
   }
 
+  // Показуємо індикатор завантаження
+  loadingSpinner.classList.remove('hidden');
+
   fetchImages(query)
     .then(images => {
       renderImages(images);
@@ -25,5 +29,9 @@ form.addEventListener('submit', event => {
         title: 'Error',
         message: 'Something went wrong. Please try again later.',
       });
+    })
+    .finally(() => {
+      // Ховаємо індикатор завантаження після завершення запиту
+      loadingSpinner.classList.add('hidden');
     });
 });
