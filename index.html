@@ -6,26 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vanilla App Template</title>
     
-
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
     />
-    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script type="module" crossorigin src="/hw-11/commonHelpers.js"></script>
-    <link rel="modulepreload" crossorigin href="/hw-11/assets/vendor-0fc460d7.js">
-    <link rel="stylesheet" href="/hw-11/assets/vendor-4b066c51.css">
-    <link rel="stylesheet" href="/hw-11/assets/index-d4bc4e72.css">
   </head>
   <body>
-    <form id="search-form">
-      <input type="text" name="searchQuery" placeholder="Search images..." />
-      <button type="submit">Search</button>
-    </form>
-
-    <div class="loading-spinner hidden"></div>
-
-    <ul class="gallery"></ul>
+    <div class="reviews-section">
+      <h2>Reviews</h2>
+      <div class="swiper-container">
+        <ul class="swiper-wrapper">
+          <!-- Элементы отзывов будут добавлены динамически -->
+        </ul>
+        <!-- Кнопки для навигации -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+      <div class="error-message"></div>
+    </div>
 
     
   </body>
