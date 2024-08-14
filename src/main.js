@@ -1,54 +1,61 @@
-import { fetchImages } from './js/pixabay-api.js';
-import { renderImages } from './js/render-functions.js';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
+// Этот код должен находиться в одном файле JavaScript
 
-// Отримання посилань на статичні елементи
-const form = document.querySelector('#search-form');
-const gallery = document.querySelector('.gallery');
-const loadingSpinner = document.querySelector('.loading-spinner');
+document.addEventListener('DOMContentLoaded', function () {
+  // Инициализация слайдера
+  const swiper = new Swiper('.swiper-container', {
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    keyboard: {
+      enabled: true,
+      onlyInViewport: false,
+    },
+    a11y: true,
+    slidesPerView: 3, // Показывать 3 слайда одновременно
+    spaceBetween: 10,
+  });
 
-function clearGallery() {
-  gallery.innerHTML = ''; // Очищення галереї
-}
+  // Загрузите отзывы с сервера
+  fetchReviews(swiper);
+});
 
-function showLoader() {
-  loadingSpinner.classList.remove('hidden'); // Показати індикатор завантаження
-}
+// Функция для получения отзывов с сервера
+function fetchReviews(swiper) {
+  fetch('/api/reviews') // Укажите правильный URL вашего API
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const reviewsList = document.querySelector('.swiper-wrapper');
+      reviewsList.innerHTML = ''; // Очистить список перед добавлением новых элементов
 
-function hideLoader() {
-  loadingSpinner.classList.add('hidden'); // Сховати індикатор завантаження
-}
+      if (data.reviews.length === 0) {
+        document.querySelector('.error-message').innerText = 'No reviews found';
+        return;
+      }
 
-form.addEventListener('submit', event => {
-  event.preventDefault();
+      data.reviews.forEach(review => {
+        const reviewItem = document.createElement('li');
+        reviewItem.classList.add('swiper-slide');
+        reviewItem.innerHTML = `
+          <img src="${review.photo}" alt="${review.name}">
+          <h3>${review.name}</h3>
+          <p>${review.text}</p>
+        `; // Подгоните под вашу структуру данных.
+        reviewsList.appendChild(reviewItem);
+      });
 
-  const query = event.target.elements.searchQuery.value.trim();
-  if (query === '') {
-    iziToast.warning({
-      title: 'Warning',
-      message: 'Please enter a search query!',
-    });
-    return;
-  }
-
-  // Очищення галереї і показ індикатора завантаження
-  clearGallery();
-  showLoader();
-
-  fetchImages(query)
-    .then(images => {
-      renderImages(images, gallery);
+      swiper.update(); // Обновить слайдер после добавления новых элементов
     })
     .catch(error => {
-      console.error('Error handling images:', error);
-      iziToast.error({
-        title: 'Error',
-        message: 'Something went wrong. Please try again later.',
-      });
-    })
-    .finally(() => {
-      // Сховати індикатор завантаження після завершення запиту
-      hideLoader();
+      console.error(
+        'There has been a problem with your fetch operation:',
+        error
+      );
+      document.querySelector('.error-message').innerText = 'Not found';
     });
-});
+}
