@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Функция для получения отзывов с сервера
 function fetchReviews(swiper) {
-  fetch('/api/reviews') // Укажите правильный URL вашего API
+  fetch('/45375111-d1e8183fd09326f55157dfb1e/reviews') // Укажите правильный URL вашего API
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
